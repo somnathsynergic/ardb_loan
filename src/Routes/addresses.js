@@ -1,0 +1,26 @@
+import { REACT_APP_BASE_URL } from "../Config/config"
+
+export const address = {
+  LOGIN: `${REACT_APP_BASE_URL}/login`,
+  NOW_DATE: `${REACT_APP_BASE_URL}/now_date`,
+  MY_AGENT: `${REACT_APP_BASE_URL}/my_agent`,
+  COLLECTION_CHECKED: `${REACT_APP_BASE_URL}/collection_checked`,
+  TOTAL_COLLECTION: `${REACT_APP_BASE_URL}/total_collection`,
+  END_COLLECTION: `${REACT_APP_BASE_URL}/end_collection`,
+  SEARCH_ACCOUNT: `${REACT_APP_BASE_URL}/search_account`,
+  LAST_TNX_DATE: `${REACT_APP_BASE_URL}/get_acc_prev_col`,
+  TRANSACTION: `${REACT_APP_BASE_URL}/transaction`,
+  CHANGE_PIN: `${REACT_APP_BASE_URL}/change_pin`,
+  DAY_SCROLL_REPORT: `${REACT_APP_BASE_URL}/day_scroll_report`,
+  TYPE_WISE_REPORT: `${REACT_APP_BASE_URL}/type_wise_report`,
+  NO_WISE_REPORT: `${REACT_APP_BASE_URL}/type_wise_report_modified`,
+  NON_COLLECTON_REPORT: `${REACT_APP_BASE_URL}/non_collection_report`,
+  MINI_STATEMENT: `${REACT_APP_BASE_URL}/date_wise_mini_statement`,
+  DUPLICATE_RECEIPT: `${REACT_APP_BASE_URL}/account_wise_scroll_report`,
+  DATE_WISE_COLL_SUMMARY: `${REACT_APP_BASE_URL}/date_wise_summary`,
+  GET_VERSION_DETAILS: `${REACT_APP_BASE_URL}/app_version`,
+  LAST_FIVE_TRANSACTIONS: `${REACT_APP_BASE_URL}/last_five_transaction`,
+  DAY_TOTAL_REPORT: `${REACT_APP_BASE_URL}/day_tot_report`,
+  ACCOUNT_INFO: `${REACT_APP_BASE_URL}/account_info`,
+  CALC_INTT: `${REACT_APP_BASE_URL}/calculate_intt`,
+}
