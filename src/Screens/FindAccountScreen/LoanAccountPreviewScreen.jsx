@@ -83,7 +83,7 @@ const LoanAccountPreviewScreen = ({ navigation, route }) => {
         ? new Date(lastTnxDate).toLocaleDateString("en-GB")
         : "No available date",
     ],
-    ["Outstanding", item?.current_balance],
+    ["Outstanding", ((+item?.current_balance)+(+calculatedIntt.curr_intt_calculated)+(+calculatedIntt.ovd_intt_calculated)+(+calculatedIntt.penal_intt_calculated)) ],
   ]
 
   const netTotalSectionTableData = [
@@ -272,13 +272,13 @@ const LoanAccountPreviewScreen = ({ navigation, route }) => {
         await BluetoothEscposPrinter.printColumn(
           [30],
           [BluetoothEscposPrinter.ALIGN.LEFT],
-          ["Outstanding : " + item?.current_balance],
+          ["Outstanding : " + parseFloat(item?.current_balance+ JSON.parse(calculatedIntt)?.curr_intt_calculated + JSON.parse(calculatedIntt)?.ovd_intt_calculated + JSON.parse(calculatedIntt)?.penal_intt_calculated)],
           {},
         )
          await BluetoothEscposPrinter.printColumn(
           [30],
           [BluetoothEscposPrinter.ALIGN.LEFT],
-          ["Demand : " + item?.current_demand],
+          ["Demand : " + parseFloat(item?.current_demand +JSON.parse(calculatedIntt)?.curr_intt_demand_calculated + JSON.parse(calculatedIntt)?.ovd_intt_demand_calculated + JSON.parse(calculatedIntt)?.penal_intt_demand_calculated)],
           {},
         )
 
@@ -294,7 +294,7 @@ const LoanAccountPreviewScreen = ({ navigation, route }) => {
           [BluetoothEscposPrinter.ALIGN.LEFT],
           [
             "Remaining Outstanding : " +
-            parseFloat(item?.current_balance - parseFloat(money)),
+            parseFloat(item?.current_balance+ JSON.parse(calculatedIntt)?.curr_intt_calculated + JSON.parse(calculatedIntt)?.ovd_intt_calculated + JSON.parse(calculatedIntt)?.penal_intt_calculated - parseFloat(money)),
           ],
           {},
         )
@@ -303,7 +303,7 @@ const LoanAccountPreviewScreen = ({ navigation, route }) => {
           [BluetoothEscposPrinter.ALIGN.LEFT],
           [
             "Remaining Demand : " +
-            parseFloat(item?.current_demand - parseFloat(money)),
+            parseFloat(item?.current_demand +JSON.parse(calculatedIntt)?.curr_intt_demand_calculated + JSON.parse(calculatedIntt)?.ovd_intt_demand_calculated + JSON.parse(calculatedIntt)?.penal_intt_demand_calculated - parseFloat(money)),
           ],
           {},
         )
@@ -408,10 +408,16 @@ const LoanAccountPreviewScreen = ({ navigation, route }) => {
           {},
         )
 
-        await BluetoothEscposPrinter.printColumn(
+         await BluetoothEscposPrinter.printColumn(
           [48],
           [BluetoothEscposPrinter.ALIGN.LEFT],
-          ["Previous Bal. : " + item?.current_balance],
+          ["Outstanding : " + parseFloat(item?.current_balance+ JSON.parse(calculatedIntt)?.curr_intt_calculated + JSON.parse(calculatedIntt)?.ovd_intt_calculated + JSON.parse(calculatedIntt)?.penal_intt_calculated)],
+          {},
+        )
+         await BluetoothEscposPrinter.printColumn(
+          [48],
+          [BluetoothEscposPrinter.ALIGN.LEFT],
+          ["Demand : " + parseFloat(item?.current_demand +JSON.parse(calculatedIntt)?.curr_intt_demand_calculated + JSON.parse(calculatedIntt)?.ovd_intt_demand_calculated + JSON.parse(calculatedIntt)?.penal_intt_demand_calculated)],
           {},
         )
 
@@ -422,12 +428,21 @@ const LoanAccountPreviewScreen = ({ navigation, route }) => {
           {},
         )
 
-        await BluetoothEscposPrinter.printColumn(
+       await BluetoothEscposPrinter.printColumn(
           [48],
           [BluetoothEscposPrinter.ALIGN.LEFT],
           [
-            "Current Bal. : " +
-            parseFloat(item?.current_balance - parseFloat(money)),
+            "Remaining Outstanding : " +
+            parseFloat(item?.current_balance+ JSON.parse(calculatedIntt)?.curr_intt_calculated + JSON.parse(calculatedIntt)?.ovd_intt_calculated + JSON.parse(calculatedIntt)?.penal_intt_calculated - parseFloat(money)),
+          ],
+          {},
+        )
+         await BluetoothEscposPrinter.printColumn(
+          [48],
+          [BluetoothEscposPrinter.ALIGN.LEFT],
+          [
+            "Remaining Demand : " +
+            parseFloat(item?.current_demand +JSON.parse(calculatedIntt)?.curr_intt_demand_calculated + JSON.parse(calculatedIntt)?.ovd_intt_demand_calculated + JSON.parse(calculatedIntt)?.penal_intt_demand_calculated - parseFloat(money)),
           ],
           {},
         )
@@ -661,13 +676,17 @@ const LoanAccountPreviewScreen = ({ navigation, route }) => {
           <View style={styles.detailRow}>
             <Text style={styles.detailLabel}>Demand</Text>
             <Text style={[styles.detailValue, styles.balanceAmount]}>
-              ₹{parseFloat(item?.current_demand || 0).toFixed(2)}
+              ₹{parseFloat(+item?.current_demand + JSON.parse(calculatedIntt)?.curr_intt_demand_calculated + JSON.parse(calculatedIntt)?.ovd_intt_demand_calculated + JSON.parse(calculatedIntt)?.penal_intt_demand_calculated|| 0).toFixed(2)}
             </Text>
           </View>
           <View style={styles.detailRow}>
-            <Text style={styles.detailLabel}>Outstanding</Text>
+            <Text style={styles.detailLabel}>Outstanding 
+
+
+            </Text>
             <Text style={[styles.detailValue, styles.balanceAmount]}>
-              ₹{parseFloat(item?.current_balance || 0).toFixed(2)}
+              {/* ₹{item?.current_balance+calculatedIntt.curr_intt_calculated+calculatedIntt.ovd_intt_calculated+calculatedIntt.penal_intt_calculated} */}
+              ₹{parseFloat(item?.current_balance + JSON.parse(calculatedIntt)?.curr_intt_calculated + JSON.parse(calculatedIntt)?.ovd_intt_calculated + JSON.parse(calculatedIntt)?.penal_intt_calculated|| 0).toFixed(2)}
             </Text>
           </View>
         </View>
@@ -695,7 +714,7 @@ const LoanAccountPreviewScreen = ({ navigation, route }) => {
             <View style={[styles.summaryItem, styles.flex1]}>
               <Text style={[styles.summaryLabel, styles.boldLabel]}>Remaining Demand</Text>
               <Text style={[styles.summaryValue, styles.newBalance]}>
-                ₹{parseFloat((item?.current_demand || 0) - parseFloat(money || 0)).toFixed(2)}
+                ₹{parseFloat((+item?.current_demand + JSON.parse(calculatedIntt)?.curr_intt_demand_calculated + JSON.parse(calculatedIntt)?.ovd_intt_demand_calculated + JSON.parse(calculatedIntt)?.penal_intt_demand_calculated) - parseFloat(money || 0)).toFixed(2)}
               </Text>
             </View>
           </View>
@@ -703,7 +722,7 @@ const LoanAccountPreviewScreen = ({ navigation, route }) => {
             <View style={[styles.summaryItem, styles.flex1]}>
               <Text style={[styles.summaryLabel, styles.boldLabel]}>Remaining Outstanding</Text>
               <Text style={[styles.summaryValue, styles.newBalance]}>
-                ₹{parseFloat((item?.current_balance || 0) - parseFloat(money || 0)).toFixed(2)}
+                ₹{parseFloat((item?.current_balance + JSON.parse(calculatedIntt)?.curr_intt_calculated + JSON.parse(calculatedIntt)?.ovd_intt_calculated + JSON.parse(calculatedIntt)?.penal_intt_calculated|| 0) - parseFloat(money || 0)).toFixed(2)}
               </Text>
             </View>
           </View>
@@ -798,7 +817,7 @@ export default LoanAccountPreviewScreen
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: COLORS.lightScheme.background,
+    backgroundColor: COLORS.lightScheme.surfaceVarient,
   },
   scrollView: { flex: 1 },
   content: { padding: 24, paddingBottom: 40 },
@@ -810,7 +829,7 @@ const styles = StyleSheet.create({
     color: COLORS.lightScheme.primary,
     textAlign: 'center',
     marginBottom: 32,
-    letterSpacing: -0.5,
+    letterSpacing: 3,
   },
 
   // Account Card
@@ -819,7 +838,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     padding: 24,
     marginBottom: 20,
-    elevation: 4,
+    elevation: 2,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.08,
@@ -868,7 +887,7 @@ const styles = StyleSheet.create({
     padding: 24,
     marginBottom: 32,
     // borderWidth:1
-    elevation: 1,
+    elevation: 2,
     shadowColor: '#000',
     // shadowOffset: { width: 0, height: 4 },
     // shadowOpacity: 0.08,

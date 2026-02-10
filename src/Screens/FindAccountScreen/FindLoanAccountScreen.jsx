@@ -572,7 +572,7 @@ export default FindLoanAccountScreen
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: COLORS.lightScheme.background,
+    backgroundColor: COLORS.lightScheme.surfaceVarient,
   },
 
   // Sticky Header
@@ -585,7 +585,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.08,
     shadowRadius: 8,
-    marginTop:10
+    
   },
   pageTitle: {
     fontSize: 15,

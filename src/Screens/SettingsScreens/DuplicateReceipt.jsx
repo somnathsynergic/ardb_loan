@@ -237,7 +237,7 @@ export default DuplicateReceipt
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: COLORS.lightScheme.background,
+    backgroundColor: COLORS.lightScheme.surfaceVarient,
     height: "100%",
     padding: 10,
   },

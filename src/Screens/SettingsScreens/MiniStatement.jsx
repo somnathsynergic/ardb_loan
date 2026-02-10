@@ -74,10 +74,10 @@ const MiniStatement = ({ navigation, item }) => {
       })
       .then(res => {
         setIsLoading(false)
-
+        
         console.log("bank details", res?.data)
-        setUserBankDetails(res?.data?.success?.msg)
-        if (res.data.length == 0)
+        if (res.data.success.suc==0){
+          setUserBankDetails([])
           ToastAndroid.showWithGravityAndOffset(
             "No data found!",
             ToastAndroid.SHORT,
@@ -85,6 +85,11 @@ const MiniStatement = ({ navigation, item }) => {
             25,
             50,
           )
+        }
+        else{
+        setUserBankDetails(res?.data?.success?.msg)
+
+        }
       })
       .catch(err => {
         setIsLoading(false)
@@ -222,7 +227,7 @@ export default MiniStatement
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: COLORS.lightScheme.background,
+    backgroundColor: COLORS.lightScheme.surfaceVarient,
     height: "100%",
     padding: 10,
   },

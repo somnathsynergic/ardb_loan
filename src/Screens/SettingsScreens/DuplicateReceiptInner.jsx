@@ -831,7 +831,7 @@ const DuplicateReceiptInner = ({ route }) => {
 export default DuplicateReceiptInner
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: COLORS.lightScheme.background },
+  container: { flex: 1, backgroundColor: COLORS.lightScheme.surfaceVarient },
   content: { padding: 24, paddingBottom: 40 },
 
   // Header
@@ -850,7 +850,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.lightScheme.onPrimary,
     borderRadius: 20,
     padding: 20,
-    elevation: 4,
+    elevation: 2,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.1,
@@ -906,7 +906,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.lightScheme.onPrimary,
     borderRadius: 24,
     padding: 24,
-    elevation: 6,
+    elevation: 2,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 6 },
     shadowOpacity: 0.12,
@@ -932,21 +932,23 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   tableHead: {
-    fontSize: 14,
+    fontSize: 12,
     fontWeight: '800',
     color: COLORS.lightScheme.primary,
     textAlign: 'center',
     backgroundColor: COLORS.lightScheme.primary + '10',
   },
   tableRow: {
-    fontSize: 14,
+    fontSize: 12,
     fontWeight: '600',
     color: COLORS.lightScheme.onBackground,
+    textAlign: 'center',
+
   },
 
   // Print Button
   dateButton: {
-    backgroundColor: COLORS.lightScheme.primary,
+    backgroundColor: COLORS.lightScheme.onPrimary,
     paddingHorizontal: 12,
     paddingVertical: 8,
     borderRadius: 8,

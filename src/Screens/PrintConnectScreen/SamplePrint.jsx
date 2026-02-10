@@ -2,6 +2,7 @@ import React from "react"
 import { Button, StyleSheet, Text, View } from "react-native"
 import { BluetoothEscposPrinter } from "react-native-bluetooth-escpos-printer"
 import { hsdLogo } from "./dummy-logo"
+import { COLORS } from "../../Resources/colors"
 
 async function printreciept() {
   const columnWidths = [24, 24]
@@ -153,10 +154,9 @@ async function printreciept() {
 const SamplePrint = () => {
   return (
     <View>
-      <Text>Sample Print Instruction</Text>
 
       <View style={styles.btn}>
-        <Button title="Test Printer" onPress={printreciept} />
+        <Button backgroundColor={COLORS.lightScheme.primary} title="Test Printer" onPress={printreciept} />
       </View>
     </View>
   )

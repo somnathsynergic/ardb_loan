@@ -335,7 +335,7 @@ const ReportType = () => {
 export default ReportType
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: COLORS.lightScheme.background },
+  container: { flex: 1, backgroundColor: COLORS.lightScheme.surfaceVarient },
 
   content: { padding: 24, paddingBottom: 40 },
 

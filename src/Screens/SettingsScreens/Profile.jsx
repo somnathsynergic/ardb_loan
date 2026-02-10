@@ -78,7 +78,7 @@ export default Profile
 const styles = StyleSheet.create({
  container: {
     flex: 1,
-    backgroundColor: COLORS.lightScheme.background,
+    backgroundColor: COLORS.lightScheme.surfaceVarient,
   },
   header: {
     paddingTop: 50,

@@ -327,7 +327,7 @@ const PrintMain = () => {
             unPair(boundAddress)
           }}
           actionText="Unpair"
-          color="#E9493F"
+          color={COLORS.lightScheme.secondary}
         />
       )}
       {boundAddress.length < 1 && (
@@ -352,13 +352,13 @@ const PrintMain = () => {
               value={item.address}
               connected={item.address === boundAddress}
               actionText="Connect"
-              color="#00BCD4"
+              color={COLORS.lightScheme.primary}
             />
           )
         })}
       </View>
       <SamplePrint />
-      <Button onPress={() => scanBluetoothDevice()} title="Scan / Connect" />
+      <Button onPress={() => scanBluetoothDevice()} backgroundColor={COLORS.lightScheme.primary} title="Scan / Connect" />
       <View style={{ height: 100 }} />
     </ScrollView>
   )

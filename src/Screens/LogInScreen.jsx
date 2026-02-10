@@ -270,7 +270,7 @@ const LogInScreen = ({ navigation }) => {
       {/* <View style={styles.heroHeader}> */}
       <View style={styles.heroHeader}>
         <Image source={HeaderLogo} style={styles.logo} resizeMode="contain" />
-        <Text style={styles.heroTitle}>{ardbName || 'Fetching ARDB Name...'}</Text>
+        <Text style={styles.heroTitle}>{ardbName || 'Fetching ARDB...'}</Text>
       </View>
 
       {/* Main Content */}

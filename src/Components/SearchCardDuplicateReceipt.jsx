@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginVertical: 10,
     marginHorizontal: 20,
-    elevation: 5,
+    elevation: 2,
     borderBottomColor: COLORS.lightScheme.primary,
     border: 1,
   },

@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
   container: {
     borderRadius: PixelRatio.roundToNearestPixel(10),
     padding: 10,
-    elevation: 10,
+    elevation: 2,
     width: "100%",
     
     // backgroundColor: colors.secondary

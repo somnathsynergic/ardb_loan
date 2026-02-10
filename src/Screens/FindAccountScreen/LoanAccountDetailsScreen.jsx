@@ -349,24 +349,27 @@ const LoanAccountDetailsScreen = ({ navigation, route }) => {
     supervisor_code: userId,
     product_id: item?.product_id,
     collection_start_dt: send_dt,
-    calculate_dt: dt
+    calculate_dt: dt,
+    curr_intt:accInfo[0]?.curr_intt,
+    ovd_intt:accInfo[0]?.ovd_intt,
+    penal_intt:accInfo[0]?.penal_intt,
 }
 
 axios.post(address.CALC_INTT, obj, ).then(res=>{console.log('INTT CALC RES====', res?.data); setCalculatedIntt(res?.data?.success?.msg)}).catch(err=>{console.log('INTT CALC ERR====', err)})
   }
   const hardCodedData = [
     { label: 'Curr. Prn. ', value: '₹' + accInfo[0]?.curr_prn || 0 },
-    { label: 'Curr. Intt.', value: '₹' + accInfo[0]?.curr_intt || 0 },
+    { label: 'Curr. Intt.', value: '₹' + (+accInfo[0]?.curr_intt+(+calculatedIntt.curr_intt_calculated)) || 0 },
     { label: 'Ovd. Prn.', value: '₹' + accInfo[0]?.ovd_prn || 0 },
-    { label: 'Ovd. Intt.', value: '₹' + accInfo[0]?.ovd_intt || 0 },
-    { label: 'Penal Intt.', value: '₹' + accInfo[0]?.penal_intt || 0 },
+    { label: 'Ovd. Intt.', value: '₹' + ((+accInfo[0]?.ovd_intt) + (+calculatedIntt.ovd_intt_calculated)) || 0 },
+    { label: 'Penal Intt.', value: '₹' + ((+accInfo[0]?.penal_intt) + (+calculatedIntt.penal_intt_calculated)) || 0 },
     { label: 'Other Charges', value: '₹' + accInfo[0]?.other_charges || 0 }
   ];
   useEffect(() => {
     if(checked=='T'){
       setUpdatedSendDt(new Date().toISOString().slice(0,10))
       calc_intt(new Date().toISOString().slice(0,10))
-    }else{
+    }else if (checked!='N'){
       if(new Date().getMonth()>3){
         setUpdatedSendDt((new Date().getFullYear()+1).toString()+'-03-'+'31')
         calc_intt((new Date().getFullYear()+1).toString()+'-03-'+'31')
@@ -379,11 +382,11 @@ axios.post(address.CALC_INTT, obj, ).then(res=>{console.log('INTT CALC RES====',
   }, [checked]);
   const hardCodedTotalDemandData = [
     { label: 'Curr. Prn.', value: '₹' + accInfo[0]?.curr_prn_demand || 0 },
-    { label: 'Curr. Intt.', value: '₹' + accInfo[0]?.curr_intt_demand || 0 },
+    { label: 'Curr. Intt.', value: '₹' + ((+accInfo[0]?.curr_intt_demand)+(+calculatedIntt.curr_intt_demand_calculated)) || 0 },
 
     { label: 'Ovd. Prn.', value: '₹' + accInfo[0]?.ovd_prn_demand || 0 },
-    { label: 'Ovd. Intt.', value: '₹' + accInfo[0]?.ovd_intt_demand || 0 },
-    { label: 'Penal Intt.', value: '₹' + accInfo[0]?.penal_intt_demand || 0 },
+    { label: 'Ovd. Intt.', value: '₹' + ((+accInfo[0]?.ovd_intt_demand)+(+calculatedIntt.ovd_intt_demand_calculated)) || 0 },
+    { label: 'Penal Intt.', value: '₹' + ((+accInfo[0]?.penal_intt_demand)+(+calculatedIntt.penal_intt_demand_calculated)) || 0 },
   ];
   const hardCodedCurrInttRateData = [
     { label: 'Ovd. Intt. Rate', value: accInfo[0]?.ovd_intt_rate + '%' || 0 },
@@ -398,8 +401,8 @@ axios.post(address.CALC_INTT, obj, ).then(res=>{console.log('INTT CALC RES====',
     { label: "Disbursement Date", value: item?.disb_dt ? new Date(item.disb_dt).toLocaleDateString("en-GB") : "" },
     // { label: "Last Intt. Calc. Date", value: accInfo[0]?.last_intt_calc_dt ? new Date(accInfo[0]?.last_intt_calc_dt).toLocaleDateString("en-GB") : "No available date" },
     { label: "Current Intt. Rt.", value: accInfo[0]?.curr_intt_rate + '%', isSecure: true }, // Fixed field
-    { label: "Balance", value: '₹' + item?.current_balance, isSecure: true },
-    { label: "Total Demand", value: '₹' + item?.current_demand, isSecure: true },
+    { label: "Balance", value: '₹' + ((+item?.current_balance)+(+calculatedIntt.curr_intt_calculated)+(+calculatedIntt.ovd_intt_calculated)+(+calculatedIntt.penal_intt_calculated)), isSecure: true },
+    { label: "Total Demand", value: '₹' + ((+item?.current_demand)+(+calculatedIntt.curr_intt_demand_calculated)+(+calculatedIntt.ovd_intt_demand_calculated)+(+calculatedIntt.penal_intt_demand_calculated)), isSecure: true },
   ];
 
   // getLastTnxDate function (unchanged)
@@ -564,7 +567,7 @@ axios.post(address.CALC_INTT, obj, ).then(res=>{console.log('INTT CALC RES====',
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: COLORS.lightScheme.background },
+  container: { flex: 1, backgroundColor: COLORS.lightScheme.surfaceVarient },
   scrollContent: { padding: 20 },
   title: {
     fontSize: 24,
@@ -602,7 +605,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.lightScheme.onPrimary,
     borderRadius: 24,
     padding: 24,
-    elevation: 8,
+    elevation: 2,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.15,

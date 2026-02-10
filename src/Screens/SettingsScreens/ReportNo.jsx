@@ -329,7 +329,7 @@ function ReportNo() {
 export default ReportNo
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: COLORS.lightScheme.background },
+  container: { flex: 1, backgroundColor: COLORS.lightScheme.surfaceVarient },
   content: { padding: 24, paddingBottom: 40 },
 
   // Header
@@ -348,7 +348,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.lightScheme.onPrimary,
     borderRadius: 20,
     padding: 20,
-    elevation: 4,
+    elevation: 2,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.1,
@@ -392,7 +392,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.lightScheme.onPrimary,
     borderRadius: 16,
     padding: 20,
-    elevation: 4,
+    elevation: 2,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.1,
@@ -456,7 +456,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.lightScheme.onPrimary,
     borderRadius: 24,
     padding: 24,
-    elevation: 6,
+    elevation: 2,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 6 },
     shadowOpacity: 0.12,

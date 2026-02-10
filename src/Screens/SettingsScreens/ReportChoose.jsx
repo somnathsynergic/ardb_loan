@@ -121,7 +121,8 @@ const styles = StyleSheet.create({
     flexWrap: "wrap",
     padding: 10,
     justifyContent: "space-evenly",
-    backgroundColor: COLORS.lightScheme.background,
+        backgroundColor: COLORS.lightScheme.surfaceVarient,
+
     height: "100%",
     marginTop:5
   },
@@ -129,18 +130,18 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.lightScheme.onPrimary,
     alignItems: "center",
     width: "45%",
-    height: 150, //
-    padding: 10,
+    height: 140, //
+    padding: 12,
     margin: 5,
     borderRadius: 10,
     justifyContent: "center",
-    elevation: 10,
+    elevation: 2,
   },
   label: {
     color: COLORS.lightScheme.primary,
     padding: 10,
     textAlign: "center",
-    fontSize: PixelRatio.roundToNearestPixel(18),
+    fontSize: PixelRatio.roundToNearestPixel(16),
   },
 })
 

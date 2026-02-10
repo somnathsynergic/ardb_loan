@@ -48,7 +48,7 @@ export const COLORS = {
     onSurface: "#191c1d",
 
     outline: "#6f797b",
-    surfaceVarient: "#dbe4e7",
+    surfaceVarient: "#ddeae0",
     onSurfaceVarient: "#3f484b",
 
     disabledButton:'#93c5a6'

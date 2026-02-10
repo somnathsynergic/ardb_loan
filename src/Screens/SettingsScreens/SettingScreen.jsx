@@ -112,7 +112,7 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
     flexWrap: "wrap",
-    padding: 10,
+    padding: 12,
     justifyContent: "space-evenly",
     backgroundColor: COLORS.lightScheme.surfaceVarient,
     height: "100%",
@@ -122,17 +122,17 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.lightScheme.onPrimary,
     alignItems: "center",
     width: "45%",
-    height: 150, //
+    height: 140, //
     padding: 10,
     margin: 5,
     borderRadius: 10,
     justifyContent: "center",
-    elevation: 10,
+    elevation: 2,
   },
   label: {
     textAlign: "center",
     color: COLORS.lightScheme.onSurface,
     padding: 10,
-    fontSize: PixelRatio.roundToNearestPixel(18),
+    fontSize: PixelRatio.roundToNearestPixel(16),
   },
 })

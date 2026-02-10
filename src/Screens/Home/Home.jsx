@@ -421,8 +421,8 @@ import { icon } from '../../Resources/Icons'; // Your icon util
 
 const Home = ({ navigation }) => {
   const {
-    userId, agentName, bankName, branchName, totalCollection,
-    getTotalDepositAmount, login, isLoan, isRD, isDaily,
+    userId, agentName, bankName, branchName, totalCollection, ardbName
+    ,getTotalDepositAmount, login, isLoan, isRD, isDaily,
   } = useContext(AppStore);
   const [currentDateTime, setCurrentDateTime] = useState(new Date());
   const [refreshing, setRefreshing] = useState(false);
@@ -476,7 +476,7 @@ const Home = ({ navigation }) => {
   <ScrollView  contentContainerStyle={styles.scrollContent}>
     <View style={styles.header}>
       <View style={styles.headerContent}>
-        <Text style={styles.greeting}>Welcome To HARDB</Text>
+        <Text style={styles.greeting}>Welcome To {ardbName}</Text>
         <Text style={styles.agentName}>Hello, {agentName?.split(' ')[0]}</Text>
       </View>
       <View style={styles.clockPill}>
@@ -542,7 +542,7 @@ const Home = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: COLORS.lightScheme.background },
+  container: { flex: 1, backgroundColor: COLORS.lightScheme.surfaceVarient },
   scrollContent: { flexGrow: 1, padding: 20 },
   header: {
     backgroundColor: COLORS.lightScheme.primary,
@@ -589,7 +589,7 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 20,
     fontWeight: '700',
-    color:COLORS.lightScheme.secondary,
+    color:'gray',
     marginBottom: 20,
     textAlign: 'center',
   },
@@ -601,12 +601,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: 'white',
-    elevation: 4,
+    elevation: 1,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.2,
     shadowRadius: 12,
-    borderWidth: 3,
+    // borderWidth: 3,
     borderColor: COLORS.lightScheme.tertiary,
   },
   navCardDisabled: { elevation: 2, shadowOpacity: 0.1, borderColor: 'gray', backgroundColor: '#f0f0f0' },

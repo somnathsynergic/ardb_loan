@@ -59,7 +59,7 @@ export default CustomHeader
 const styles = StyleSheet.create({
   container: {
     backgroundColor: COLORS.lightScheme.surface,
-    height: 58,
+    height: 65,
     flexDirection: "row",
     justifyContent: "space-between",
     paddingHorizontal: 10,
@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
     // shadowOffset: { width: 5, height: 20 },
     // shadowOpacity: 1.5,
     // shadowRadius: 2,
-    // elevation: 21,
+    elevation: 2,
   },
   image: {
     height: 50,

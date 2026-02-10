@@ -41,8 +41,8 @@ const styles = StyleSheet.create({
     borderRadius: PixelRatio.roundToNearestPixel(12),
     padding: 10,
     borderColor: '#00A63E',
-    border: 1,
-    elevation: 5,
+    border: 0.5,
+    elevation: 2,
     backgroundColor:'white'
   },
   text: {
