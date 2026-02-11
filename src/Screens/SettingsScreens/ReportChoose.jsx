@@ -1,5 +1,6 @@
 import {
   PixelRatio,
+  ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -12,7 +13,7 @@ import mainNavigationRoutes from "../../Routes/NavigationRoutes"
 
 export default function ReportChoose({ navigation }) {
   return (
-    <>
+    <ScrollView>
       <CustomHeader />
       <View style={styles.container}>
         <TouchableOpacity
@@ -111,7 +112,7 @@ export default function ReportChoose({ navigation }) {
 
       
       </View>
-    </>
+    </ScrollView>
   )
 }
 

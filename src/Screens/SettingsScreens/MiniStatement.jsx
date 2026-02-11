@@ -233,15 +233,15 @@ const styles = StyleSheet.create({
   },
   searchContainer: {
     position: "absolute",
-    bottom: 130,
+    bottom: 150,
     width: "100%",
     alignSelf: "center",
     borderColor: COLORS.lightScheme.primary,
-    borderWidth: 2.5,
+    // borderWidth: 2.5,
     backgroundColor: COLORS.lightScheme.onPrimary,
     padding: 20,
     borderRadius: 10,
-    elevation: 10,
+    elevation: 2,
   },
   dropdownContainer: {
     backgroundColor: "white",

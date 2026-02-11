@@ -640,10 +640,10 @@ const LoanAccountPreviewScreen = ({ navigation, route }) => {
         {/* Account Details Card */}
         <View style={styles.accountCard}>
           <Text style={styles.cardTitle}>Account Information</Text>
-          <View style={styles.detailRow}>
+          <View style={styles.detailRowLongName}>
             <Text style={styles.detailLabel}>Account Type</Text>
-            <Text style={[styles.detailValue, { color: COLORS.lightScheme.primary }]}>
-              {item?.acc_type === "L" ? "Loan" : item?.acc_type === "D" ? "Daily" : "RD"}
+            <Text style={[styles.detailValue, { color: COLORS.lightScheme.primary,fontSize:13 }]}>
+              {item?.product_type_name}
             </Text>
           </View>
           <View style={styles.detailRow}>
@@ -856,6 +856,14 @@ const styles = StyleSheet.create({
   },
   detailRow: {
     flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingVertical: 12,
+    borderBottomWidth: 1,
+    borderBottomColor: '#f0f0f0',
+  },
+  detailRowLongName:{
+ flexDirection: 'column',
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingVertical: 12,

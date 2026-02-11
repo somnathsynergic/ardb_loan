@@ -455,13 +455,13 @@ const styles = StyleSheet.create({
     shadowRadius: 8,
   },
   metricLabel: {
-    fontSize: 16,
+    fontSize: 13,
     color: COLORS.lightScheme.onBackground + 'AA',
     fontWeight: '500',
     flex: 1.2,
   },
   metricValue: {
-    fontSize: 16,
+    fontSize: 13,
     fontWeight: '700',
     color: COLORS.lightScheme.primary,
     textAlign: 'right',

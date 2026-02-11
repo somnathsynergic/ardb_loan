@@ -357,7 +357,7 @@ const LogInScreen = ({ navigation }) => {
                 />
                 <ButtonComponent
                   disabled={isDisable || passcode.length !== 4}
-                  title={isDisable ? "Verifying..." : "Login"}
+                  title={isDisable ? <ActivityIndicator size="small" color={COLORS.lightScheme.onPrimary} /> : "Login"}
                    handleOnpress={async () => {
                     setDisable(true)
                     let k = await login()
@@ -499,7 +499,7 @@ const styles = StyleSheet.create({
   },
   logo: { width: 85, height: 85 },
   heroTitle: {
-    fontSize: 24,
+    fontSize: 17,
     fontWeight: '600',
     color: COLORS.lightScheme.primary,
     letterSpacing: 5,

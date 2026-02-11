@@ -1,12 +1,13 @@
 import {
   ActivityIndicator,
+  Animated,
   AppState,
   ScrollView,
   StyleSheet,
   Text,
   View, SafeAreaView, FlatList, TouchableOpacity
 } from "react-native"
-import { useCallback, useContext, useEffect, useState } from "react"
+import { useCallback, useContext, useEffect, useRef, useState } from "react"
 import CustomHeader from "../../Components/CustomHeader"
 import { COLORS, colors } from "../../Resources/colors"
 import InputComponent from "../../Components/InputComponent"
@@ -23,36 +24,19 @@ const FindLoanAccountScreen = ({ navigation }) => {
   const [searchValue, changeSearchValue] = useState(() => "")
   const [userBankDetails, setUserBankDetails] = useState(() => [])
   const [isLoading, setIsLoading] = useState(false)
+  const [isCalculating, setIsCalculating] = useState(false)
+  const debounceRef = useRef(null)
+  const pulseAnim = useRef(new Animated.Value(1)).current
 
   const { userId, bankId, branchCode } = useContext(AppStore)
 
-  function handleAccountSearch() {
-    if (!searchValue) {
-      return
-    }
-    fetchBankDetails()
-  }
-
-  const debounce = func => {
+  const debounce = (func, delay) => {
     let timer
-    return function (...args) {
-      const context = this
-      if (timer) clearTimeout(timer)
-      timer = setTimeout(() => {
-        timer = null
-        func.apply(context, args)
-      }, 2000)
+    return (...args) => {
+      clearTimeout(timer)
+      timer = setTimeout(() => func.apply(this, args), delay)
     }
   }
-
-  // useEffect(() => {
-  //   handleAccountSearch()
-  //   console.log(userBankDetails)
-  // }, [searchValue])
-
-  useEffect(() => {
-    debounce(fetchBankDetails)()
-  }, [searchValue])
 
   const fetchBankDetails = async () => {
     setIsLoading(true)
@@ -86,6 +70,42 @@ const FindLoanAccountScreen = ({ navigation }) => {
         console.log(err?.response?.data)
       })
   }
+
+  useEffect(() => {
+    if (searchValue) {
+      if (debounceRef.current) {
+        setIsLoading(true)
+        clearTimeout(debounceRef.current)
+      }
+      debounceRef.current = setTimeout(() => {
+        fetchBankDetails()
+      }, 2000)
+    }
+    else{
+      setUserBankDetails([])
+    }
+  }, [searchValue])
+
+  useEffect(() => {
+    if (isLoading) {
+      const pulseAnimation = Animated.loop(
+        Animated.sequence([
+          Animated.timing(pulseAnim, {
+            toValue: 1.05,
+            duration: 600,
+            useNativeDriver: true,
+          }),
+          Animated.timing(pulseAnim, {
+            toValue: 1,
+            duration: 600,
+            useNativeDriver: true,
+          }),
+        ])
+      )
+      pulseAnimation.start()
+      return () => pulseAnimation.stop()
+    }
+  }, [isLoading])
 
   useFocusEffect(
     useCallback(() => {
@@ -278,7 +298,9 @@ const FindLoanAccountScreen = ({ navigation }) => {
         {/* Pure View "Search Icon" */}
         {/* <View style={styles.searchIconView} /> */}
         {/* <Text> {({ color, size }) => icon.giver(color, 30)}</Text> */}
+        <View style={[styles.searchIconView,{marginLeft:-SCREEN_WIDTH/18}]}>
                     {icon.Find(COLORS.lightScheme.primary, 30)}
+                    </View>
         
         <InputComponent
           placeholder="Search Account No. or Name"
@@ -288,20 +310,22 @@ const FindLoanAccountScreen = ({ navigation }) => {
           autoFocus={false}
         />
         {searchValue ? (
-          <TouchableOpacity onPress={() => changeSearchValue('')} style={styles.clearButton}>
+          <TouchableOpacity onPress={() => changeSearchValue('')} style={[styles.clearButton,{marginLeft:-SCREEN_WIDTH/12}]}>
             <Text style={styles.clearText}>✕</Text>
           </TouchableOpacity>
         ) : null}
       </View>
       
       {/* Results Counter */}
-      {!isLoading && (
-        <View style={styles.resultsCounter}>
+      <View style={styles.resultsCounter}>
+        {isLoading ? (
+          <ActivityIndicator size="small" color={COLORS.lightScheme.primary} />
+        ) : (
           <Text style={styles.resultsText}>
             {userBankDetails?.length || 0} account{userBankDetails?.length !== 1 ? 's' : ''} found
           </Text>
-        </View>
-      )}
+        )}
+      </View>
     </View>
 
     {/* Main Results */}
@@ -309,7 +333,11 @@ const FindLoanAccountScreen = ({ navigation }) => {
       {isLoading ? (
         <View style={styles.skeletonContainer}>
           {[1,2,3].map((i) => (
-            <View key={i} style={styles.skeletonCard} />
+            <Animated.View key={i} style={[styles.skeletonCard, { transform: [{ scale: pulseAnim }] }]}>
+              <View style={styles.skeletonLine} />
+              <View style={styles.skeletonLineShort} />
+              <View style={styles.skeletonLine} />
+            </Animated.View>
           ))}
         </View>
       ) : userBankDetails?.length ? (
@@ -329,19 +357,28 @@ const FindLoanAccountScreen = ({ navigation }) => {
           ))}
         </ScrollView>
       ) : (
-        <View style={styles.emptyState}>
+     <View style={styles.emptyState}>
           {/* Pure View "Icon" */}
           {/* <View style={styles.emptyIconView} /> */}
-          <Text style={styles.emptyTitle}>No Results Found</Text>
-          <Text style={styles.emptySubtitle}>
+
+          {!searchValue ? <Text style={styles.emptyTitle}>Type on the searchbar for results.</Text> :<Text style={styles.emptyTitle}>No Results Found</Text> }
+           {searchValue ?<Text style={styles.emptySubtitle}>
             Try different search terms or check spelling
-          </Text>
-          <TouchableOpacity 
+          </Text>:<Text>Search with name or loan ID.</Text>}
+           {searchValue ?<TouchableOpacity 
             style={styles.emptyAction} 
             onPress={() => changeSearchValue('')}
           >
             <Text style={styles.emptyActionText}>Clear All</Text>
-          </TouchableOpacity>
+          </TouchableOpacity>:  
+          <TouchableOpacity 
+             
+            onPress={() => changeSearchValue('')}
+          > 
+                    {icon.Find(COLORS.lightScheme.primary, 30)}
+                    </TouchableOpacity>  
+          
+          }
         </View>
       )}
     </View>
@@ -585,7 +622,6 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.08,
     shadowRadius: 8,
-    
   },
   pageTitle: {
     fontSize: 15,
@@ -604,16 +640,17 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     paddingHorizontal: 16,
     height: 48,
+    
     // borderWidth: 1,
     // borderColor: COLORS.lightScheme.primary + '20',
   },
   searchIconView: {
-    width: 20,
-    height: 20,
-    borderRadius: 10,
+    width: 45,
+    height: 45,
+    borderRadius: 30,
     backgroundColor: COLORS.lightScheme.primary + '25',
     marginRight: 12,
-    padding: 4,
+    padding: 6,
   },
   searchInput: {
     flex: 1,
@@ -626,6 +663,8 @@ const styles = StyleSheet.create({
   clearButton: {
     paddingVertical: 8,
     paddingHorizontal: 12,
+    marginRight:SCREEN_WIDTH/1.5,
+    backgroundColor: COLORS.lightScheme.onError + '25',
   },
   clearText: {
     fontSize: 16,
@@ -637,9 +676,9 @@ const styles = StyleSheet.create({
     paddingVertical: 4,
   },
   resultsText: {
-    fontSize: 15,
+    fontSize: 12,
     color: COLORS.lightScheme.onBackground + 'B0',
-    fontWeight: '500',
+    fontWeight: '400',
   },
 
   // Results Area
@@ -659,10 +698,23 @@ const styles = StyleSheet.create({
     paddingVertical: 20,
   },
   skeletonCard: {
-    height: 76,
+    height: 140,
     backgroundColor: COLORS.lightScheme.onPrimary,
     borderRadius: 16,
     elevation: 2,
+    padding: 16,
+    justifyContent: 'space-around',
+  },
+  skeletonLine: {
+    height: 12,
+    backgroundColor: COLORS.lightScheme.primary + '20',
+    borderRadius: 6,
+  },
+  skeletonLineShort: {
+    height: 12,
+    width: '60%',
+    backgroundColor: COLORS.lightScheme.primary + '20',
+    borderRadius: 6,
   },
 
   // Empty State with Pure View Icon
@@ -706,6 +758,7 @@ const styles = StyleSheet.create({
     color: 'white',
     fontWeight: '600',
     fontSize: 16,
+    
   },
 });
 

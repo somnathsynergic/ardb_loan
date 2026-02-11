@@ -418,6 +418,7 @@ import { StackActions } from '@react-navigation/native';
 import BluetoothEscposPrinter from 'react-native-bluetooth-escpos-printer'; // Your printer
 import { COLORS, colors } from "../../Resources/colors";
 import { icon } from '../../Resources/Icons'; // Your icon util
+import { SCREEN_HEIGHT } from "react-native-normalize"
 
 const Home = ({ navigation }) => {
   const {
@@ -476,7 +477,7 @@ const Home = ({ navigation }) => {
   <ScrollView  contentContainerStyle={styles.scrollContent}>
     <View style={styles.header}>
       <View style={styles.headerContent}>
-        <Text style={styles.greeting}>Welcome To {ardbName}</Text>
+        <Text style={[styles.greeting, {fontSize : SCREEN_HEIGHT*0.02}]}>Welcome To {ardbName}</Text>
         <Text style={styles.agentName}>Hello, {agentName?.split(' ')[0]}</Text>
       </View>
       <View style={styles.clockPill}>
@@ -559,7 +560,7 @@ const styles = StyleSheet.create({
     shadowRadius: 12,
   },
   headerContent: { flex: 1 },
-  greeting: { fontSize: 22, color: COLORS.lightScheme.onPrimary, fontWeight: '800', letterSpacing: 1 },
+  greeting: { fontSize: 22, color: COLORS.lightScheme.onPrimary, fontWeight: '800', letterSpacing: 1,opacity:0.85 },
   agentName: { fontSize: 18, color: COLORS.lightScheme.onPrimary, fontWeight: '600', marginTop: 5 },
   clockPill: {
     backgroundColor: 'rgba(255,255,255,0.2)',

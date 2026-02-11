@@ -8,6 +8,7 @@ import {
 import React from "react"
 // import LinearGradient from 'react-native-linear-gradient';
 import { COLORS, colors } from "../Resources/colors"
+import { SCREEN_HEIGHT } from "react-native-normalize"
 
 const ButtonComponent = ({
   title,
@@ -28,9 +29,9 @@ const ButtonComponent = ({
             ? COLORS.lightScheme.disabledButton
             : COLORS.lightScheme.primary,
         },
-        { ...styles.container, ...customStyle },
+        { ...styles.container, ...customStyle }, { height: SCREEN_HEIGHT * 0.05 },
       ]}>
-      <Text style={styles.text}>{title}</Text>
+      <Text style={[styles.text]}>{title}</Text>
     </TouchableOpacity>
   )
 }

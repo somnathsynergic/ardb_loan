@@ -6,6 +6,7 @@ import { useNavigation } from "@react-navigation/native"
 import mainNavigationRoutes from "../Routes/NavigationRoutes"
 import { AppStore } from "../Context/AppContext"
 import HeaderIcon from "../Resources/Images/logo.png"
+import DeviceInfo from "react-native-device-info"
 
 const CustomHeader = () => {
   const [isImageLoad, setIsImageLoad] = useState(true)
@@ -13,6 +14,7 @@ const CustomHeader = () => {
   const { isLogin, setIsLogin, logout } = useContext(AppStore)
 
   const navigation = useNavigation()
+  let version = DeviceInfo.getVersion()
 
   const handleLogOut = () => {
     Alert.alert("Logging out", "Are you sure you want to log out?", [
@@ -33,7 +35,7 @@ const CustomHeader = () => {
   }
   return (
     <View style={styles.container}>
-      <Text> </Text>
+      <Text ></Text>
       {isImageLoad && (
         <Image
           source={HeaderIcon}
@@ -44,7 +46,7 @@ const CustomHeader = () => {
       )}
       {!isImageLoad && (
         <Text style={{ color: COLORS.lightScheme.onBackground }}>
-          HARDB
+          ARDB
         </Text>
       )}
       <Pressable onPress={handleLogOut}>
@@ -59,7 +61,7 @@ export default CustomHeader
 const styles = StyleSheet.create({
   container: {
     backgroundColor: COLORS.lightScheme.surface,
-    height: 65,
+    height: 70,
     flexDirection: "row",
     justifyContent: "space-between",
     paddingHorizontal: 10,

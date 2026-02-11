@@ -10,7 +10,7 @@ import {
   Image,
   TouchableOpacity, SafeAreaView
 } from "react-native"
-import { Card } from 'react-native-paper';
+import { ActivityIndicator, Card } from 'react-native-paper';
 import { useContext, useState, useEffect, useCallback } from "react"
 import axios from "axios"
 import { COLORS, colors } from "../../Resources/colors"
@@ -332,6 +332,8 @@ const LoanAccountDetailsScreen = ({ navigation, route }) => {
   const [accInfo, setAccInfo] = useState([])
   const [checked, setChecked] = useState('N');
   const [updatedSendDt,setUpdatedSendDt] = useState('')
+  const [last_intt_calc_dt, setLastInttCalcDt] = useState('')
+  const [isCalculatingIntt, setIsCalculatingIntt] = useState(false);
   const {
     modifiedAt, todayDateFromServer, holidayLock, getFlagsRequest,
     collectionFlag, endFlag, transDt, allowCollectionDays, userId, bankId, branchCode,send_dt
@@ -343,6 +345,8 @@ const LoanAccountDetailsScreen = ({ navigation, route }) => {
   const [lastTnxDate, setLastTnxDate] = useState("");
   const [calculatedIntt, setCalculatedIntt] = useState({curr_intt_calculated: 0, curr_intt_demand_calculated: 0, ovd_intt_calculated: 0, ovd_intt_demand_calculated: 0, penal_intt_calculated: 0, penal_intt_demand_calculated: 0});
   const calc_intt = (dt)=>{
+    setIsCalculatingIntt(true);
+
     const obj = {
     ardb_id: bankId,
     branch_code: branchCode,
@@ -355,54 +359,59 @@ const LoanAccountDetailsScreen = ({ navigation, route }) => {
     penal_intt:accInfo[0]?.penal_intt,
 }
 
-axios.post(address.CALC_INTT, obj, ).then(res=>{console.log('INTT CALC RES====', res?.data); setCalculatedIntt(res?.data?.success?.msg)}).catch(err=>{console.log('INTT CALC ERR====', err)})
+axios.post(address.CALC_INTT, obj, ).then(res=>{console.log('INTT CALC RES====', res?.data); setIsCalculatingIntt(false); setCalculatedIntt(res?.data?.success?.msg)}).catch(err=>{console.log('INTT CALC ERR====', err)})
   }
   const hardCodedData = [
     { label: 'Curr. Prn. ', value: '₹' + accInfo[0]?.curr_prn || 0 },
-    { label: 'Curr. Intt.', value: '₹' + (+accInfo[0]?.curr_intt+(+calculatedIntt.curr_intt_calculated)) || 0 },
+    { label: 'Curr. Intt.', value: isCalculatingIntt ? <ActivityIndicator size="small" color={COLORS.lightScheme.secondary} /> : '₹' + (+accInfo[0]?.curr_intt+(+calculatedIntt.curr_intt_calculated)) || 0 },
     { label: 'Ovd. Prn.', value: '₹' + accInfo[0]?.ovd_prn || 0 },
-    { label: 'Ovd. Intt.', value: '₹' + ((+accInfo[0]?.ovd_intt) + (+calculatedIntt.ovd_intt_calculated)) || 0 },
-    { label: 'Penal Intt.', value: '₹' + ((+accInfo[0]?.penal_intt) + (+calculatedIntt.penal_intt_calculated)) || 0 },
+    { label: 'Ovd. Intt.', value: isCalculatingIntt ? <ActivityIndicator size="small" color={COLORS.lightScheme.secondary} /> : '₹' + ((+accInfo[0]?.ovd_intt) + (+calculatedIntt.ovd_intt_calculated)) || 0 },
+    { label: 'Penal Intt.', value: isCalculatingIntt ? <ActivityIndicator size="small" color={COLORS.lightScheme.secondary} /> : '₹' + ((+accInfo[0]?.penal_intt) + (+calculatedIntt.penal_intt_calculated)) || 0 },
     { label: 'Other Charges', value: '₹' + accInfo[0]?.other_charges || 0 }
   ];
   useEffect(() => {
     if(checked=='T'){
       setUpdatedSendDt(new Date().toISOString().slice(0,10))
       calc_intt(new Date().toISOString().slice(0,10))
+        setLastInttCalcDt(new Date())
+
     }else if (checked!='N'){
       if(new Date().getMonth()>3){
         setUpdatedSendDt((new Date().getFullYear()+1).toString()+'-03-'+'31')
         calc_intt((new Date().getFullYear()+1).toString()+'-03-'+'31')
+        // setLastInttCalcDt((new Date().getFullYear()+1).toString()+'-03-'+'31')
       }else{
         setUpdatedSendDt(new Date().getFullYear().toString()+'-03-'+'31')
         calc_intt(new Date().getFullYear().toString()+'-03-'+'31')
+        setLastInttCalcDt(new Date().getFullYear().toString()+'-03-'+'31')
       }
 
     }
   }, [checked]);
   const hardCodedTotalDemandData = [
     { label: 'Curr. Prn.', value: '₹' + accInfo[0]?.curr_prn_demand || 0 },
-    { label: 'Curr. Intt.', value: '₹' + ((+accInfo[0]?.curr_intt_demand)+(+calculatedIntt.curr_intt_demand_calculated)) || 0 },
+    { label: 'Curr. Intt.', value: isCalculatingIntt ? <ActivityIndicator size="small" color={COLORS.lightScheme.secondary} /> : '₹' + ((+accInfo[0]?.curr_intt_demand)+(+calculatedIntt.curr_intt_demand_calculated)) || 0 },
 
     { label: 'Ovd. Prn.', value: '₹' + accInfo[0]?.ovd_prn_demand || 0 },
-    { label: 'Ovd. Intt.', value: '₹' + ((+accInfo[0]?.ovd_intt_demand)+(+calculatedIntt.ovd_intt_demand_calculated)) || 0 },
-    { label: 'Penal Intt.', value: '₹' + ((+accInfo[0]?.penal_intt_demand)+(+calculatedIntt.penal_intt_demand_calculated)) || 0 },
+    { label: 'Ovd. Intt.', value: isCalculatingIntt ? <ActivityIndicator size="small" color={COLORS.lightScheme.secondary} /> : '₹' + ((+accInfo[0]?.ovd_intt_demand)+(+calculatedIntt.ovd_intt_demand_calculated)) || 0 },
+    { label: 'Penal Intt.', value: isCalculatingIntt ? <ActivityIndicator size="small" color={COLORS.lightScheme.secondary} /> : '₹' + ((+accInfo[0]?.penal_intt_demand)+(+calculatedIntt.penal_intt_demand_calculated)) || 0 },
   ];
   const hardCodedCurrInttRateData = [
-    { label: 'Ovd. Intt. Rate', value: accInfo[0]?.ovd_intt_rate + '%' || 0 },
-    { label: 'Penal Intt. Rate', value: accInfo[0]?.penal_intt_rate + '%' || 0 },
+    { label: 'Ovd. Intt. Rate', value: accInfo[0]?.ovd_intt_rate.toFixed(2) + '%' || 0 },
+    { label: 'Penal Intt. Rate', value: accInfo[0]?.penal_intt_rate.toFixed(2) + '%' || 0 },
   ];
   // Fixed tableData as key-value pairs for cards
   const accountData = [
-    { label: "Account Type", value: item?.acc_type === "D" ? "Daily" : item?.acc_type === "R" ? "RD" : item?.acc_type === "L" ? "Loan" : "" },
+    // { label: "Account Type", value: item?.acc_type === "D" ? "Daily" : item?.acc_type === "R" ? "RD" : item?.acc_type === "L" ? "Loan" : "" },
+    { label: "Account Type", value: item?.product_type_name},
     { label: "Account No.", value: item?.product_id },
     { label: "Name", value: item?.cust_name },
     { label: "Disbursement Amt.", value: '₹' + accInfo[0]?.disb_amt }, // Fixed field
     { label: "Disbursement Date", value: item?.disb_dt ? new Date(item.disb_dt).toLocaleDateString("en-GB") : "" },
     // { label: "Last Intt. Calc. Date", value: accInfo[0]?.last_intt_calc_dt ? new Date(accInfo[0]?.last_intt_calc_dt).toLocaleDateString("en-GB") : "No available date" },
-    { label: "Current Intt. Rt.", value: accInfo[0]?.curr_intt_rate + '%', isSecure: true }, // Fixed field
-    { label: "Balance", value: '₹' + ((+item?.current_balance)+(+calculatedIntt.curr_intt_calculated)+(+calculatedIntt.ovd_intt_calculated)+(+calculatedIntt.penal_intt_calculated)), isSecure: true },
-    { label: "Total Demand", value: '₹' + ((+item?.current_demand)+(+calculatedIntt.curr_intt_demand_calculated)+(+calculatedIntt.ovd_intt_demand_calculated)+(+calculatedIntt.penal_intt_demand_calculated)), isSecure: true },
+    { label: "Current Intt. Rt.", value: accInfo[0]?.curr_intt_rate.toFixed(2) + '%', isSecure: true }, // Fixed field
+    { label: "Balance", value: isCalculatingIntt ? '' : '₹' + ((+item?.current_balance)+(+calculatedIntt.curr_intt_calculated)+(+calculatedIntt.ovd_intt_calculated)+(+calculatedIntt.penal_intt_calculated)), isSecure: true },
+    { label: "Total Demand", value: isCalculatingIntt ? '' : '₹' + ((+item?.current_demand)+(+calculatedIntt.curr_intt_demand_calculated)+(+calculatedIntt.ovd_intt_demand_calculated)+(+calculatedIntt.penal_intt_demand_calculated)), isSecure: true },
   ];
 
   // getLastTnxDate function (unchanged)
@@ -421,6 +430,7 @@ axios.post(address.CALC_INTT, obj, ).then(res=>{console.log('INTT CALC RES====',
       const res = await axios.post(address.ACCOUNT_INFO, obj, { headers: { Accept: "application/json" } });
       console.log('RES========', res)
       setAccInfo(res?.data?.msg?.length !== 0 ? res?.data?.success?.msg : []);
+      setLastInttCalcDt(res?.data?.msg?.length !== 0 ? res?.data?.success?.msg[0]?.last_intt_calc_dt : null)
     } catch (err) {
       console.log("Error:", err);
     }
@@ -457,7 +467,7 @@ axios.post(address.CALC_INTT, obj, ).then(res=>{console.log('INTT CALC RES====',
 
   const renderDataRow = (dataItem, index) => (
     <Card key={index} style={styles.dataCard} onPress={() => toggleVisibility(dataItem.label.toLowerCase())}>
-      <View style={styles.row}>
+      <View style={dataItem.value.length<30?styles.row:styles.rowLongName}>
         <Text style={styles.label}>{dataItem.label}</Text>
         <View style={styles.valueContainer}>
           {dataItem.label.toLowerCase() !== 'balance' && dataItem.label.toLowerCase() !== 'current intt. rt.' && dataItem.label.toLowerCase() !== 'total demand' && <Text style={styles.value} numberOfLines={1}>
@@ -465,7 +475,7 @@ axios.post(address.CALC_INTT, obj, ).then(res=>{console.log('INTT CALC RES====',
             {dataItem.value}
 
           </Text>}
-          {dataItem.isSecure && (
+          {dataItem.isSecure && !isCalculatingIntt?(
             <TouchableOpacity onPress={() => toggleVisibility(dataItem.label.toLowerCase())} style={[styles.eyeIcon, { marginLeft: SCREEN_WIDTH * 0.3 }]}>
               {/* <View style={[styles.valueContainer,{marginLeft:50}]}> */}
               <Text style={styles.value}>{dataItem.value}</Text>
@@ -473,14 +483,14 @@ axios.post(address.CALC_INTT, obj, ).then(res=>{console.log('INTT CALC RES====',
               {!isVisible[dataItem.label.toLowerCase()] && <Image source={require('../../Resources/Images/Icons/down.png')} style={styles.icon} />}
               {isVisible[dataItem.label.toLowerCase()] && <Image source={require('../../Resources/Images/Icons/up.png')} style={styles.icon} />}
             </TouchableOpacity>
-          )}
+          ): dataItem.isSecure &&<ActivityIndicator size="small" color={COLORS.lightScheme.secondary} style={{ marginLeft: SCREEN_WIDTH * 0.3 }} />}
         </View>
       </View>
       {dataItem.label.toLowerCase() === 'balance' && isVisible[dataItem.label.toLowerCase()] && hardCodedData.map((dataItem, index) => (
         <View key={index} style={styles.row}>
           <Text style={styles.label}>{dataItem.label}</Text>
           <View style={[styles.valueContainer, { marginLeft: 50 }]}>
-            <Text style={styles.value}>{dataItem.value}</Text>
+            {isCalculatingIntt ? <ActivityIndicator size="small" color={COLORS.lightScheme.secondary} /> : <Text style={styles.value}>{dataItem.value}</Text>}
           </View>
         </View>
       ))}
@@ -488,7 +498,8 @@ axios.post(address.CALC_INTT, obj, ).then(res=>{console.log('INTT CALC RES====',
         <View key={index} style={styles.row}>
           <Text style={styles.label}>{dataItem.label}</Text>
           <View style={styles.valueContainer}>
-            <Text style={styles.value}>{dataItem.value}</Text>
+                        {isCalculatingIntt ? <ActivityIndicator size="small" color={COLORS.lightScheme.secondary} /> : <Text style={styles.value}>{dataItem.value}</Text>}
+
           </View>
         </View>
       ))}
@@ -512,7 +523,8 @@ axios.post(address.CALC_INTT, obj, ).then(res=>{console.log('INTT CALC RES====',
           {accountData.map((dataItem, index) => renderDataRow(dataItem, index))}
         </View>
          <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginBottom: 20, elevation: 4, shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.1, shadowRadius: 8, backgroundColor: COLORS.lightScheme.primary, borderRadius: 40, padding: 10 }}>
-            {new Date().toISOString().slice(0, 10) > send_dt && <View style={{ flexDirection: 'row', alignItems: 'center',justifyContent:'center', marginRight: 20 }}>
+            {/* {new Date().toISOString().slice(0, 10) > send_dt && <View style={{ flexDirection: 'row', alignItems: 'center',justifyContent:'center', marginRight: 20 }}> */}
+         <View style={{ flexDirection: 'row', alignItems: 'center',justifyContent:'center', marginRight: 20 }}>
               <RadioButton
                 value="T"
                 status={checked === 'T' ? 'checked' : 'unchecked'}
@@ -522,9 +534,10 @@ axios.post(address.CALC_INTT, obj, ).then(res=>{console.log('INTT CALC RES====',
 
               />
               <Text style={{ fontSize: 16, color: COLORS.lightScheme.onPrimary }}>Till Today </Text>
-            </View>}
+            </View>
 
-             {(new Date().toISOString().slice(0, 10) > send_dt || new Date().toISOString().slice(0, 10) === send_dt) && <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+             {/* {(new Date().toISOString().slice(0, 10) > send_dt || new Date().toISOString().slice(0, 10) === send_dt) && <View style={{ flexDirection: 'row', alignItems: 'center' }}> */}
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <RadioButton
                 value="L"
                 status={checked === 'L' ? 'checked' : 'unchecked'}
@@ -533,10 +546,11 @@ axios.post(address.CALC_INTT, obj, ).then(res=>{console.log('INTT CALC RES====',
                 uncheckedColor={COLORS.lightScheme.onPrimary}
               />
               <Text style={{ fontSize: 16, color: COLORS.lightScheme.onPrimary }}>Till 31st. March </Text>
-            </View>}
+            </View>
           </View>
         <View style={styles.inputContainer}>
-          <Text style={styles.intt_calc}>Interest Calculated Upto: {new Date(accInfo[0]?.last_intt_calc_dt).toLocaleDateString("en-GB")} </Text>
+          {/* <Text style={styles.intt_calc}>Interest Calculated Upto: {new Date(accInfo[0]?.last_intt_calc_dt).toLocaleDateString("en-GB")} </Text> */}
+          <Text style={styles.intt_calc}>Interest Calculated Upto: {new Date(last_intt_calc_dt).toLocaleDateString("en-GB")} </Text>
 
          
           <InputComponent
@@ -596,6 +610,7 @@ const styles = StyleSheet.create({
     borderRadius: 16,
   },
   row: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', padding: 18 },
+  rowLongName: { flexDirection: 'column', justifyContent: 'space-between', alignItems: 'center', padding: 20, gap:12 },
   label: { fontSize: 13, fontWeight: '600', color: 'gray', flex: 1 },
   valueContainer: { flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end', minWidth: 120 },
   value: { fontSize: 13, fontWeight: 'bold', color: COLORS.lightScheme.primary, marginRight: 10 },
@@ -612,7 +627,7 @@ const styles = StyleSheet.create({
     shadowRadius: 12,
   },
   buttonContainer: { flexDirection: 'row', justifyContent: 'space-evenly' },
-  intt_calc: { color: COLORS.lightScheme.tertiary, marginHorizontal: 'auto', marginVertical: 20 }
+  intt_calc: { color: COLORS.lightScheme.primary, marginHorizontal: 'auto', marginVertical: 20, fontWeight:'bold' },
 });
 
 export default LoanAccountDetailsScreen;
