@@ -404,6 +404,7 @@ axios.post(address.CALC_INTT, obj, ).then(res=>{console.log('INTT CALC RES====',
   const accountData = [
     // { label: "Account Type", value: item?.acc_type === "D" ? "Daily" : item?.acc_type === "R" ? "RD" : item?.acc_type === "L" ? "Loan" : "" },
     { label: "Account Type", value: item?.product_type_name},
+    { label: "Fund Type", value: item?.fund_type=='N'?'Borrowed Fund':'Own Fund'},
     { label: "Account No.", value: item?.product_id },
     { label: "Name", value: item?.cust_name },
     { label: "Disbursement Amt.", value: '₹' + accInfo[0]?.disb_amt }, // Fixed field

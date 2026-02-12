@@ -21,7 +21,7 @@ const CustomHeader = () => {
       {
         text: "No",
         onPress: () => console.log("Cancel Pressed"),
-        style: "default",
+        style: 'red',
       },
       {
         text: "Yes",
@@ -50,7 +50,7 @@ const CustomHeader = () => {
         </Text>
       )}
       <Pressable onPress={handleLogOut}>
-        {icon.logout(COLORS.lightScheme.onPrimaryContainer)}
+        {icon.logout(COLORS.lightScheme.error)}
       </Pressable>
     </View>
   )

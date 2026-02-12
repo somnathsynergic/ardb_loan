@@ -397,14 +397,14 @@ const LoanAccountPreviewScreen = ({ navigation, route }) => {
         await BluetoothEscposPrinter.printColumn(
           [48],
           [BluetoothEscposPrinter.ALIGN.LEFT],
-          ["Acc. No. : " + item?.account_number],
+          ["Acc. No. : " + item?.product_id],
           {},
         )
 
         await BluetoothEscposPrinter.printColumn(
           [48],
           [BluetoothEscposPrinter.ALIGN.LEFT],
-          ["Name: " + item?.customer_name],
+          ["Name: " + item?.cust_name],
           {},
         )
 
@@ -647,6 +647,10 @@ const LoanAccountPreviewScreen = ({ navigation, route }) => {
             </Text>
           </View>
           <View style={styles.detailRow}>
+            <Text style={styles.detailLabel}>Fund Type</Text>
+            <Text style={[styles.detailValue, { color: COLORS.lightScheme.primary }]}>{item?.fund_type=='N'?'Borrowed Fund':'Own Fund'}</Text>
+          </View>
+           <View style={styles.detailRow}>
             <Text style={styles.detailLabel}>Account No.</Text>
             <Text style={[styles.detailValue, { color: COLORS.lightScheme.primary }]}>{item?.product_id}</Text>
           </View>
@@ -868,7 +872,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: 12,
     borderBottomWidth: 1,
+    gap:10,
     borderBottomColor: '#f0f0f0',
+    fontWeight:'700'
   },
   detailLabel: {
     fontSize: 16,

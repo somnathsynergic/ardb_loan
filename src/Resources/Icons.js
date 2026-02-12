@@ -66,6 +66,14 @@ const search = (color = colors.black, size = 25) => (
   <AntDesign name={"searchoutlined"} color={color} size={size} />
 )
 
+const email = (color = colors.black, size = 25) => (
+  <MaterialCommunityIcons name="email" color={color} size={size} />
+)
+
+const phone = (color = colors.black, size = 25) => (
+  <MaterialIcons name="phone" color={color} size={size} />
+)
+
 export const icon = {
   HomeFill,
   Find,
@@ -84,5 +92,7 @@ export const icon = {
   man,
   duplicate,
   right,
-  search
+  search,
+  email,
+  phone
 }

@@ -42,6 +42,7 @@ const SearchCard = ({ item, index, navigation, flag }) => {
             : ""}
         </Text>
         <Text style={styles.text}>Product Code : {item?.product_type_name.length>20?item?.product_type_name.substr(0,15)+'...':item?.product_type_name}</Text>
+        <Text style={styles.text}>Fund Type : {item?.fund_type=='N'?'Borrowed Fund':'Own Fund'}</Text>
       </View>
       {/* <View style={styles.arrow}>
         <Text>{icon.right(COLORS.lightScheme.primary, 45)}</Text>
@@ -80,7 +81,7 @@ const styles = StyleSheet.create({
     justifyContent: "flex-end",
   },
   text: {
-    color: COLORS.lightScheme.primary,
+    color: COLORS.lightScheme.tertiary,
     padding: 2,
     fontWeight: "500",
     fontSize: 14,

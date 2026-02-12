@@ -343,7 +343,7 @@ const EndWorkScreen = ({ navigation }) => {
       {/* End Work Button */}
       <View style={styles.buttonSection}>
         <ButtonComponent
-          title={isLoading ? "Completing..." : "✓ End Work"}
+          title={isLoading ? "Completing..." : "End Work"}
           customStyle={styles.endButton}
           handleOnpress={handleEndWorkButton}
           disabled={isLoading || !endScreenPassword}

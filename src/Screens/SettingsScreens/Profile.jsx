@@ -1,4 +1,5 @@
 import { FlatList, Image, StyleSheet, Text, View,ScrollView } from "react-native"
+import LinearGradient from 'react-native-linear-gradient'
 import { useContext } from "react"
 import { COLORS, colors } from "../../Resources/colors"
 import CustomHeader from "../../Components/CustomHeader"
@@ -6,7 +7,7 @@ import { Table, Rows } from "react-native-table-component"
 import { icon } from "../../Resources/Icons"
 import { AppStore } from "../../Context/AppContext"
 const Profile = () => {
-  const { userId, agentName, agentEmail, agentPhoneNumber, maximumAmount } =
+  const { userId, agentName, agentEmail, agentPhoneNumber, maximumAmount,allowCollectionDays } =
     useContext(AppStore)
 
   const tableData = [
@@ -18,24 +19,25 @@ const Profile = () => {
   ]
   return (
     <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
-      <View style={styles.header}>
-        <View style={styles.logoContainer}>
-          <View style={styles.introText}>
-            <Text style={styles.greeting}>{`Hello, ${agentName}!`}</Text>
-          </View>
-        </View>
-        {/* <View style={styles.avatarContainer}>
-          <Image
-            source={{
-              uri: "https://cdn.pixabay.com/photo/2015/03/04/22/35/avatar-659651_640.png",
-            }}
-            style={styles.avatar}
-          />
-        </View> */}
+      <View style={{flex:1,justifyContent:'center',alignItems:'center', marginBottom:-60,marginTop:50}}>
+        <Text style={{color:COLORS.lightScheme.primary,fontSize:30,fontWeight:'bold',textAlign:'center',letterSpacing:3}}>Profile</Text>
       </View>
-
       <View style={styles.card}>
         <View style={styles.profileRow}>
+          <View style={styles.iconContainer}>
+            {icon.Find(COLORS.lightScheme.primary, 24)}
+          </View>
+          <View style={styles.profileItem}>
+            <Text style={styles.label}>Supervisor</Text>
+            <Text style={styles.value}>{agentName}</Text>
+          </View>
+        </View>
+
+        <View style={styles.separator} />
+         <View style={styles.profileRow}>
+          <View style={styles.iconContainer}>
+            {icon.profile(COLORS.lightScheme.primary, 24)}
+          </View>
           <View style={styles.profileItem}>
             <Text style={styles.label}>Supervisor Code</Text>
             <Text style={styles.value}>{userId}</Text>
@@ -45,6 +47,9 @@ const Profile = () => {
         <View style={styles.separator} />
 
         <View style={styles.profileRow}>
+          <View style={styles.iconContainer}>
+            {icon.email(COLORS.lightScheme.primary, 24)}
+          </View>
           <View style={styles.profileItem}>
             <Text style={styles.label}>Email</Text>
             <Text style={styles.value}>{agentEmail}</Text>
@@ -54,6 +59,9 @@ const Profile = () => {
         <View style={styles.separator} />
 
         <View style={styles.profileRow}>
+          <View style={styles.iconContainer}>
+            {icon.phone(COLORS.lightScheme.primary, 24)}
+          </View>
           <View style={styles.profileItem}>
             <Text style={styles.label}>Mobile No.</Text>
             <Text style={styles.value}>{agentPhoneNumber}</Text>
@@ -63,9 +71,21 @@ const Profile = () => {
         <View style={styles.separator} />
 
         <View style={styles.profileRow}>
+          <View style={styles.iconContainer}>
+            {icon.giver(COLORS.lightScheme.primary, 24)}
+          </View>
           <View style={styles.profileItem}>
             <Text style={styles.label}>Maximum Limit</Text>
             <Text style={styles.value}>{maximumAmount}</Text>
+          </View>
+        </View>
+         <View style={styles.profileRow}>
+          <View style={styles.iconContainer}>
+            {icon.giver(COLORS.lightScheme.primary, 24)}
+          </View>
+          <View style={styles.profileItem}>
+            <Text style={styles.label}>Maximum Allowable Days</Text>
+            <Text style={styles.value}>{allowCollectionDays}</Text>
           </View>
         </View>
       </View>
@@ -79,6 +99,7 @@ const styles = StyleSheet.create({
  container: {
     flex: 1,
     backgroundColor: COLORS.lightScheme.surfaceVarient,
+   
   },
   header: {
     paddingTop: 50,
@@ -108,6 +129,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: -80,
   },
+  avatarWrapper: {
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.15,
+    shadowRadius: 12,
+    elevation: 8,
+  },
   avatar: {
     width: 140,
     height: 140,
@@ -115,24 +143,23 @@ const styles = StyleSheet.create({
     borderWidth: 4,
     borderColor: COLORS.lightScheme.background,
     backgroundColor: COLORS.lightScheme.surface,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.15,
-    shadowRadius: 12,
-    elevation: 8,
   },
   card: {
     flex: 1,
     marginHorizontal: 24,
-    marginBottom: 32,
+    marginVertical: 100,
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    // marginTop: 32,
     backgroundColor: COLORS.lightScheme.surface,
     borderRadius: 20,
     padding: 24,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.08,
-    shadowRadius: 16,
-    elevation: 4,
+    // shadowColor: '#000',
+    // shadowOffset: { width: 0, height: 2 },
+    // shadowOpacity: 0.08,
+    // shadowRadius: 16,
+    elevation: 2,
   },
   profileRow: {
     flexDirection: 'row',
@@ -140,24 +167,34 @@ const styles = StyleSheet.create({
     paddingVertical: 16,
     flex: 1,
   },
+  iconContainer: {
+     width: 45,
+    height: 45,
+    borderRadius: 30,
+    alignItems: 'center',
+    marginRight: 16,
+    justifyContent: 'center',
+        backgroundColor: COLORS.lightScheme.primary + '25',
+
+  },
   profileItem: {
     flex: 1,
   },
   label: {
     fontSize: 14,
     fontWeight: '600',
-    color: COLORS.lightScheme.onSurfaceVariant,
+    color: 'gray',
     marginBottom: 4,
   },
   value: {
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: '500',
     color: COLORS.lightScheme.primary,
     lineHeight: 24,
   },
   separator: {
-    height: 1,
-    backgroundColor: COLORS.lightScheme.outlineVariant,
+    height: 5,
+    backgroundColor: COLORS.lightScheme.primary,
     marginHorizontal: -24,
   },
 })

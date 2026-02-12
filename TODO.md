@@ -1,0 +1,5 @@
+- [ ] Import LinearGradient for gradient header
+- [ ] Uncomment and enhance avatar section
+- [ ] Add icons to profile fields (Supervisor Code, Email, Mobile, Max Limit, Allow Days)
+- [ ] Update header with gradient background
+- [ ] Refine card and overall styling for sophistication
