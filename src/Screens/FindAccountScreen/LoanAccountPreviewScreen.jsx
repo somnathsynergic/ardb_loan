@@ -181,6 +181,7 @@ const LoanAccountPreviewScreen = ({ navigation, route }) => {
       // })
       .then(res => {
         console.log("result " + res.data.status)
+        console.log("result.data " ,res.data)
         if (res.data.status) {
           setLoading(false)
 
@@ -197,8 +198,9 @@ const LoanAccountPreviewScreen = ({ navigation, route }) => {
           printReceipt(res.data.receipt_no)
           navigation.dispatch(resetAction)
         } else {
+
           setLoading(false)
-          
+          console.log(result, result.data)
           alert("Data already submitted. Please upload new dataset.")
           ToastAndroid.showWithGravityAndOffset(
             "Data already submitted. Please upload new dataset.",

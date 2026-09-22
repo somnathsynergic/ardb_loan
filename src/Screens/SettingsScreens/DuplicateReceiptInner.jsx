@@ -146,10 +146,10 @@ const DuplicateReceiptInner = ({ route }) => {
 
   const getLastTnxDate = async rcptNo => {
     const obj = {
-      bank_id: bankId,
+      ardb_id: bankId,
       branch_code: branchCode,
-      agent_code: userId,
-      account_number: item?.account_number,
+      supervisor_code: userId,
+      account_number: item?.product_id,
       receipt_no: rcptNo,
       flag: item?.acc_type,
     }
@@ -194,7 +194,7 @@ const DuplicateReceiptInner = ({ route }) => {
 
   async function printReceipt(item) {
     if (printOp == 2) {
-      console.log(item)
+      console.log(item,'item')
       try {
         await BluetoothEscposPrinter.printerAlign(
           BluetoothEscposPrinter.ALIGN.CENTER,
@@ -276,7 +276,7 @@ const DuplicateReceiptInner = ({ route }) => {
             BluetoothEscposPrinter.ALIGN.CENTER,
             BluetoothEscposPrinter.ALIGN.RIGHT,
           ],
-          ["ACC NO", ":", item?.product_id],
+          ["ACC NO", ":", item?.account_number],
           {},
         )
 

@@ -89,11 +89,11 @@ const LogInScreen = ({ navigation }) => {
       .then(res => {
         setLatestAppVersion(res.data.data.app_version)
         setAppDownloadLink(res.data.data.app_download_link)
-        console.log(
-          "fsdadgtreyhgtdhyrfujfyudx",
-          res.data.data.app_download_link,
-        )
-        console.log("fsdadgtreyhgtdhysdfsdfsdrfujfyudx", res.data)
+        // console.log(
+        //   "fsdadgtreyhgtdhyrfujfyudx",
+        //   res.data.data.app_download_link,
+        // )
+        // console.log("fsdadgtreyhgtdhysdfsdfsdrfujfyudx", res.data)
         setUpdateStatus(res.data.update_status)
 
         if (res.data.update_status == "Y") {
@@ -107,9 +107,9 @@ const LogInScreen = ({ navigation }) => {
     getVersionFromWeb()
   }, [])
 
-  console.log("skahlrcnsfytkuwhnf ", version)
-  console.log("skahlrcnsfytkuwhnf ", latestAppVersion)
-  console.log("skahlrcnsfytkuwhnf ", updateStatus)
+  // console.log("skahlrcnsfytkuwhnf ", version)
+  // console.log("skahlrcnsfytkuwhnf ", latestAppVersion)
+  // console.log("skahlrcnsfytkuwhnf ", updateStatus)
 
   function showAlertUpdate(link) {
     Alert.alert("Found Update!", "Please update your app.", [
@@ -293,13 +293,14 @@ const LogInScreen = ({ navigation }) => {
                 
               </View> */}
 
-              <Text style={styles.fieldLabel}>Device ID</Text>
+              <Text style={styles.fieldLabel} >Device ID</Text>
               <InputComponent
+                
                 value={deviceId ? deviceId : "Fetching..."}
                 readOnly={true}
                 containerStyle={styles.compactInput}
               />
-
+              
               <Text style={styles.fieldLabel}>Supervisor ID</Text>
               <InputComponent
                 value={userId ? userId : "Fetching..."}

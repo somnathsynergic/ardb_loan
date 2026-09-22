@@ -50,9 +50,8 @@ const AppContext = ({ children }) => {
   useEffect(() => {
     const uniqueId = DeviceInfo.getUniqueIdSync()
     setDeviceID(uniqueId)
-    console.log("UniqueID: ", uniqueId)
-    console.log("DeviceID: ", deviceId)
-    console.log("==========||||||| fdjgh")
+    // console.log("UniqueID: ", uniqueId)
+    // console.log("DeviceID: ", deviceId)
   }, [])
 
   const login = async () => {
@@ -155,7 +154,7 @@ const AppContext = ({ children }) => {
     await axios
       .post(address.NOW_DATE)
       .then(res => {
-        console.log("NOW DATE FROM SERVER: ", new Date(res?.data?.now_date))
+        // console.log("NOW DATE FROM SERVER: ", new Date(res?.data?.now_date))
         setTodayDateFromServer(new Date(res?.data?.now_date))
       })
       .catch(err => {
@@ -176,7 +175,7 @@ const AppContext = ({ children }) => {
 
   const getUserId = async () => {
     const obj = { device_id: deviceId }
-    console.log("OBJ for USER ID: ", address.MY_AGENT)
+    // console.log("OBJ for USER ID: ", address.MY_AGENT)
     await axios
       .post(address.MY_AGENT, obj, {
         headers: {
@@ -184,9 +183,9 @@ const AppContext = ({ children }) => {
         },
       })
       .then(res => {
-        console.log('ARDB NAME=====',res?.data?.success?.msg[0]?.ardb_name)
+        // console.log('ARDB NAME=====',res?.data?.success?.msg[0]?.ardb_name)
         setArdbName(res?.data?.success?.msg[0]?.ardb_name)
-        console.log("User ID: ", res?.data?.success?.msg[0]?.user_id)
+        // console.log("User ID: ", res?.data?.success?.msg[0]?.user_id)
         setUserId(res?.data?.success?.msg[0]?.user_id)
       })
       .catch(err => {
